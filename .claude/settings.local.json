@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(node --check server.js)",
+      "Bash(node --check config/db.js)",
+      "Bash(node --check models/Tank.js)",
+      "Bash(node --check controllers/tankController.js)",
+      "Bash(node --check routes/tankRoutes.js)",
+      "Bash(timeout 25 node server.js)",
+      "Bash(node *)",
+      "Bash(lsof -nP -iTCP:5000 -sTCP:LISTEN)"
+    ]
+  }
+}

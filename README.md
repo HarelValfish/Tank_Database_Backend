@@ -1,0 +1,156 @@
+# ARMOR/DB — Israeli Tank Database
+
+A premium, tactical full-stack application for browsing and cataloguing Israeli armor.
+Dark-mode HUD aesthetic, targeting-reticle cards, staggered grid reveals, and seamless
+layout-morphing detail views.
+
+> **Note:** Educational / reference project. Imagery is illustrative placeholder content.
+
+## Stack
+
+| Layer    | Tech                                                        |
+| -------- | ----------------------------------------------------------- |
+| Frontend | React 18 + Vite, Tailwind CSS, Framer Motion, Lucide icons  |
+| Backend  | Node.js + Express (ES modules)                              |
+| Database | MongoDB + Mongoose                                          |
+
+## Project Structure
+
+```
+Tank_Database/
+├── backend/
+│   ├── config/db.js              # Mongoose connection
+│   ├── models/Tank.js            # Tank schema (+ embedded specifications)
+│   ├── controllers/tankController.js
+│   ├── routes/tankRoutes.js
+│   ├── server.js                 # Express app + middleware + boot
+│   ├── seed.js                   # Optional starter data
+│   └── .env.example
+└── frontend/
+    ├── src/
+    │   ├── components/           # Dashboard, TankCard, TankDetail, AddTankForm, Header, FilterBar, SkeletonCard
+    │   ├── context/ToastContext.jsx
+    │   ├── lib/api.js            # API client
+    │   ├── App.jsx
+    │   └── main.jsx
+    ├── tailwind.config.js
+    ├── vite.config.js            # proxies /api → :5000
+    └── .env.example
+```
+
+## Prerequisites
+
+- **Node.js 18+**
+- **MongoDB** — either:
+  - a local server (`mongod`) running on `mongodb://127.0.0.1:27017`, or
+  - a free **MongoDB Atlas** cluster (get the `mongodb+srv://…` connection string).
+
+---
+
+## 1 · Backend setup
+
+```bash
+cd backend
+npm install
+
+# Create your environment file from the template:
+cp .env.example .env
+```
+
+Open `backend/.env` and set your connection string:
+
+```ini
+# Local MongoDB
+MONGO_URI=mongodb://127.0.0.1:27017/tank_database
+
+# — or — MongoDB Atlas (replace user/password/cluster)
+# MONGO_URI=mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/tank_database?retryWrites=true&w=majority
+
+PORT=5000
+CLIENT_ORIGIN=http://localhost:5173
+```
+
+Seed the database with starter tanks (optional but recommended):
+
+```bash
+npm run seed
+```
+
+Start the API:
+
+```bash
+npm run dev      # auto-restarts on file changes (node --watch)
+# or
+npm start
+```
+
+You should see `✔  MongoDB connected …` and `✔  API running → http://localhost:5000`.
+Check `http://localhost:5000/api/health` to confirm.
+
+---
+
+## 2 · Frontend setup
+
+In a **second terminal**:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open the URL Vite prints (default **http://localhost:5173**).
+
+> The Vite dev server proxies all `/api/*` requests to the backend on port 5000,
+> so no CORS configuration is needed during development. If you deploy the API
+> elsewhere, copy `frontend/.env.example` to `.env` and set `VITE_API_URL`.
+
+---
+
+## API Reference
+
+| Method | Endpoint                   | Description                                   |
+| ------ | -------------------------- | --------------------------------------------- |
+| GET    | `/api/health`              | Health check                                  |
+| GET    | `/api/tanks`               | List tanks. Query: `search`, `variant`, `era` |
+| GET    | `/api/tanks/meta/filters`  | Distinct variants + era buckets for dropdowns |
+| GET    | `/api/tanks/:id`           | Single tank                                   |
+| POST   | `/api/tanks`               | Create a tank                                 |
+
+### Tank shape
+
+```json
+{
+  "tankName": "Merkava",
+  "variant": "Mk 4 M Windbreaker",
+  "armament": "120 mm MG253 smoothbore gun",
+  "description": "…",
+  "serviceTime": "2004–Present",
+  "imageUrl": "https://… or data:image/…",
+  "history": "…",
+  "specifications": {
+    "weight": "65 tonnes",
+    "crewSize": "4",
+    "speed": "64 km/h"
+  }
+}
+```
+
+---
+
+## Features
+
+- **Dashboard gallery** — staggered grid reveal, hover scale + scanline sweep, reticle corner brackets.
+- **Search & filters** — debounced keyword search plus Variant / Era dropdowns sourced from live data.
+- **Detail view** — Framer Motion shared-layout morph from card → full HUD panel with spec cards and history.
+- **Add unit** — slide-over form with client-side validation, live image preview, and success/error toasts.
+- **Feedback** — loading skeletons, error/empty states with reconnect, animated toast notifications.
+
+## Troubleshooting
+
+- **`MONGO_URI is not defined`** → you didn't create `backend/.env` (run `cp .env.example .env`).
+- **`MongoDB connection error`** → `mongod` isn't running, or your Atlas IP allowlist / credentials are wrong.
+- **Frontend can't load tanks** → make sure the backend is running on port 5000 first.
+```
+
+Built with a tactical command-center aesthetic. 🎯
