@@ -11,10 +11,11 @@ module "vpc" {
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
+  reuse_nat_ips        = true
+  external_nat_ip_ids  = [var.nat_eip_allocation_id]
   enable_dns_hostnames = true
 
-  # Required tags for the AWS Load Balancer Controller to discover subnets
-  public_subnet_tags  = { "kubernetes.io/role/elb"          = "1" }
-  private_subnet_tags = { "kubernetes.io/role/internal-elb" = "1" }
+  public_subnet_tags  = { "kubernetes.io/role/elb"                          = "1" }
+  private_subnet_tags = { "kubernetes.io/role/internal-elb"                 = "1" }
   tags                = { "kubernetes.io/cluster/${var.cluster_name}" = "shared" }
 }
