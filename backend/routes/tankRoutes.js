@@ -8,6 +8,7 @@ import {
   getFilterMeta,
 } from "../controllers/tankController.js";
 import { generateTanks, bulkCreateTanks } from "../controllers/aiController.js";
+import { requireAdmin } from "../middleware/requireAdmin.js";
 
 const router = Router();
 
@@ -25,8 +26,10 @@ if (process.env.ENABLE_AI_IMPORT === "true") {
 router.get("/", getTanks);
 router.get("/meta/filters", getFilterMeta);
 router.get("/:id", getTankById);
-router.post("/", createTank);
-router.put("/:id", updateTank);
-router.delete("/:id", deleteTank);
+
+// ─── Admin-only routes ───────────────────────────────────────────
+router.post("/", requireAdmin, createTank);
+router.put("/:id", requireAdmin, updateTank);
+router.delete("/:id", requireAdmin, deleteTank);
 
 export default router;

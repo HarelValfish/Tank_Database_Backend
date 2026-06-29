@@ -6,7 +6,9 @@ import Dashboard from "./components/Dashboard.jsx";
 import TankDetail from "./components/TankDetail.jsx";
 import AddTankForm from "./components/AddTankForm.jsx";
 import AiImportPanel from "./components/AiImportPanel.jsx";
-import { api } from "./lib/api.js";
+import { api, ADMIN_KEY } from "./lib/api.js";
+
+const IS_ADMIN = Boolean(ADMIN_KEY);
 import { useToast } from "./context/ToastContext.jsx";
 
 export default function App() {
@@ -106,7 +108,7 @@ export default function App() {
     <div className="min-h-screen tactical-grid">
       <Header
         count={tanks.length}
-        onAdd={() => setAdding(true)}
+        onAdd={IS_ADMIN ? () => setAdding(true) : undefined}
         onAiImport={() => setAiOpen(true)}
       />
 
@@ -156,8 +158,8 @@ export default function App() {
             <TankDetail
               tank={selected}
               onClose={() => setSelected(null)}
-              onEdit={(t) => setEditing(t)}
-              onDelete={handleDelete}
+              onEdit={IS_ADMIN ? (t) => setEditing(t) : undefined}
+              onDelete={IS_ADMIN ? handleDelete : undefined}
             />
           )}
         </AnimatePresence>

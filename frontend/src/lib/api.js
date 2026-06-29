@@ -2,6 +2,14 @@
 // the Express server (see vite.config.js). In production set VITE_API_URL.
 const BASE = import.meta.env.VITE_API_URL ?? "";
 
+// Only present in local dev (.env). Never set during the production build,
+// so write controls never appear and the header is never sent in production.
+export const ADMIN_KEY = import.meta.env.VITE_ADMIN_KEY ?? "";
+
+function adminHeaders() {
+  return ADMIN_KEY ? { Authorization: `Bearer ${ADMIN_KEY}` } : {};
+}
+
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
     headers: { "Content-Type": "application/json" },
@@ -44,6 +52,7 @@ export const api = {
   createTank(payload) {
     return request("/api/tanks", {
       method: "POST",
+      headers: { "Content-Type": "application/json", ...adminHeaders() },
       body: JSON.stringify(payload),
     });
   },
@@ -51,12 +60,16 @@ export const api = {
   updateTank(id, payload) {
     return request(`/api/tanks/${id}`, {
       method: "PUT",
+      headers: { "Content-Type": "application/json", ...adminHeaders() },
       body: JSON.stringify(payload),
     });
   },
 
   deleteTank(id) {
-    return request(`/api/tanks/${id}`, { method: "DELETE" });
+    return request(`/api/tanks/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", ...adminHeaders() },
+    });
   },
 
   // ─── Local-only AI importer (routes exist only when ENABLE_AI_IMPORT=true) ──

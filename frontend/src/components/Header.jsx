@@ -48,15 +48,17 @@ export default function Header({ count, onAdd, onAiImport }) {
             </motion.button>
           )}
 
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={onAdd}
-            className="flex items-center gap-2 rounded-md border border-amber/50 bg-amber/10 px-4 py-2.5 font-display text-sm font-600 tracking-wide text-amber-glow shadow-glow-sm transition-colors hover:bg-amber/20"
-          >
-            <Plus size={17} />
-            <span className="hidden sm:inline">NEW UNIT</span>
-          </motion.button>
+          {onAdd && (
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={onAdd}
+              className="flex items-center gap-2 rounded-md border border-amber/50 bg-amber/10 px-4 py-2.5 font-display text-sm font-600 tracking-wide text-amber-glow shadow-glow-sm transition-colors hover:bg-amber/20"
+            >
+              <Plus size={17} />
+              <span className="hidden sm:inline">NEW UNIT</span>
+            </motion.button>
+          )}
         </div>
       </div>
     </header>
