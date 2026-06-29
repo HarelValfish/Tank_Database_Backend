@@ -14,6 +14,18 @@ module "eks" {
   # Grant the IAM identity that runs terraform admin access to the cluster
   enable_cluster_creator_admin_permissions = true
 
+  access_entries = {
+    github_actions = {
+      principal_arn = "arn:aws:iam::769638986113:role/gh-tankdb-deploy"
+      policy_associations = {
+        admin = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = { type = "cluster" }
+        }
+      }
+    }
+  }
+
   # Cluster access — give your IAM user/role admin access
   cluster_endpoint_public_access       = true
   cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]   # restrict to your IP in prod
