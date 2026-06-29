@@ -10,7 +10,7 @@ module "vpc" {
   private_subnets = ["10.0.10.0/24", "10.0.11.0/24"]
 
   enable_nat_gateway   = true
-  single_nat_gateway   = false   # one per AZ for HA (set true to save cost in dev)
+  single_nat_gateway   = true
   enable_dns_hostnames = true
 
   # Required tags for the AWS Load Balancer Controller to discover subnets

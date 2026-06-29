@@ -11,6 +11,9 @@ module "eks" {
   # Enable OIDC provider — required for IAM Roles for Service Accounts (IRSA)
   enable_irsa = true
 
+  # Grant the IAM identity that runs terraform admin access to the cluster
+  enable_cluster_creator_admin_permissions = true
+
   # Cluster access — give your IAM user/role admin access
   cluster_endpoint_public_access       = true
   cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]   # restrict to your IP in prod
