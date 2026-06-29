@@ -112,6 +112,9 @@ jobs:
             --from-literal=ADMIN_KEY="${{ secrets.ADMIN_KEY }}" \
             --dry-run=client -o yaml | kubectl apply -f -
 
+      - name: Apply k8s manifests
+        run: kubectl apply -f k8s/
+
       - name: Rolling update — backend
         run: |
           kubectl set image deployment/backend \
