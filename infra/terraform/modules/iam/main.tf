@@ -17,7 +17,9 @@ resource "aws_iam_role" "github_actions_deploy" {
       Condition = {
         StringEquals = {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-          "token.actions.githubusercontent.com:sub" = "repo:HarelValfish/Tank_Database:ref:refs/heads/main"
+        }
+        StringLike = {
+          "token.actions.githubusercontent.com:sub" = "repo:HarelValfish/Tank_Database:*"
         }
       }
     }]
