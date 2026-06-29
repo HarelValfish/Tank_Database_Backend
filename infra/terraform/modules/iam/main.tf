@@ -19,7 +19,10 @@ resource "aws_iam_role" "github_actions_deploy" {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
         }
         StringLike = {
-          "token.actions.githubusercontent.com:sub" = "repo:HarelValfish/Tank_Database:*"
+          "token.actions.githubusercontent.com:sub" = [
+            "repo:HarelValfish/Tank_Database_Backend:*",
+            "repo:HarelValfish/Tank_Database_Frontend:*"
+          ]
         }
       }
     }]
